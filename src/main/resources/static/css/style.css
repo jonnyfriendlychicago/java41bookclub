@@ -1,0 +1,54 @@
+/* @charset "UTF-8"; */
+
+h1 {
+	color:rgb(255, 255, 255); 
+}
+
+h2 {
+	color:rgb(0, 0, 0); 
+}
+
+
+.footerText {
+	color:rgb(255, 255, 255); 
+	font-size: 1rem; 
+}
+.blueStuff {
+	color: blue; 
+}
+
+.greenStuff {
+	color: green; 
+}
+
+.errorText {
+	color: red; 
+}
+/* .px-2 {
+  padding-left: ($spacer * .5) !important;
+  padding-right: ($spacer * .5) !important;
+} */
+
+.cardPaddingJonLikes {
+	padding: 3rem; 
+}
+
+#header {
+	background-color: lightblue; 
+}
+
+#footer {
+	display: flex; 
+	justify-content: center;
+	align-items: center;  
+	background-color: rgb(77, 77, 77); 
+	position: fixed;
+  	bottom: 0;
+  	height: 3rem; 
+  	
+}
+
+#registerLogin2 {
+	display: flex; 
+	justify-content: center;
+}
