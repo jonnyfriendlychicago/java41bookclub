@@ -1,11 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.Date"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +48,13 @@
 
 	<div id=main class="container-fluid">
 		<div id=list class="container-fluid">
-	
+			<c:choose>
+				<c:when test="${mgmtPermissionErrorMsg != null}">
+					<p class="errorText">${mgmtPermissionErrorMsg}</p>
+				</c:when>
+				<c:otherwise></c:otherwise>
+			</c:choose>
+			
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -70,12 +73,28 @@
 							<td><a href="/publication/${record.id}">${record.pubTitle}</a></td>
 							<td>${record.pubAuthor}</td>
 							<td>${record.userMdl.userName} </td>
-							<td><a href="/publication/${record.id}/edit">Edit</a>
-		
-								<form action="/publication/${record.id}" method="post">
-									<input type="hidden" name="_method" value="delete"> 
-									<input type="submit" value="Delete">
-								</form></td>
+							<td>
+								<div class="buttonArrange1"> 
+									<c:choose>
+										<c:when test="${user.id == record.userMdl.id }">
+											<a href= "/publication/${record.id}/edit"><button class="btn btn-secondary">Edit</button></a>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose> 
+
+									<c:choose>
+										<c:when test="${user.id == record.userMdl.id }">
+											<form action="/publication/${record.id}" method="post">
+											    <input type="hidden" name="_method" value="delete">
+											    <button class="btn btn-danger">Delete</button>
+											</form>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>

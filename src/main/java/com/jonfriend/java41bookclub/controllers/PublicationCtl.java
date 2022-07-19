@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jonfriend.java41bookclub.models.PublicationMdl;
-import com.jonfriend.java41bookclub.models.DojoMdl;
 import com.jonfriend.java41bookclub.services.PublicationSrv;
 import com.jonfriend.java41bookclub.services.UserSrv;
-import com.jonfriend.java41bookclub.services.DojoSrv;
+
 
 @Controller
 public class PublicationCtl {
@@ -127,6 +127,10 @@ public class PublicationCtl {
 		// If no userId is found in session, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
 		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
 		
+		// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
+		Long userId = (Long) session.getAttribute("userId");
+		model.addAttribute("user", userSrv.findById(userId));
+
 		// records in table
 		List<PublicationMdl> intVar1 = publicationSrv.returnAll();
 		model.addAttribute("publicationList", intVar1); 
@@ -134,12 +138,9 @@ public class PublicationCtl {
 //		List<DojoMdl> intVar2 = dojoSrvIntVar.returnAll();
 //		model.addAttribute("dojoList", intVar2); 
 		
+		// whether to display guis alerts/controls based on whether on error path or not
 		String onErrorPath = "nope"; 
 		model.addAttribute("onErrorPath", onErrorPath); 
-		
-		// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
-		Long userId = (Long) session.getAttribute("userId");
-		model.addAttribute("user", userSrv.findById(userId));
 		
 		return "publication/list.jsp";  
 	}
@@ -191,7 +192,11 @@ public class PublicationCtl {
 		// If no userId is found in session, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
 		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
 
-        // records in table
+		// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
+		Long userId = (Long) session.getAttribute("userId");
+		model.addAttribute("user", userSrv.findById(userId));
+
+		// records in table
 		List<PublicationMdl> intVar1 = publicationSrv.returnAll();
 		model.addAttribute("publicationList", intVar1); 
 		
@@ -203,10 +208,6 @@ public class PublicationCtl {
 //		List<DojoMdl> intVar3 = dojoSrvIntVar.returnAll();
 //		model.addAttribute("dojoList", intVar3); 
 		
-		// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
-		Long userId = (Long) session.getAttribute("userId");
-		model.addAttribute("user", userSrv.findById(userId));
-		
 		return "publication/edit.jsp";
 	}
 	
@@ -217,31 +218,33 @@ public class PublicationCtl {
 			@ModelAttribute("publication") PublicationMdl publicationMdl 
 			, BindingResult result
 			, Model model
-			, HttpSession session) {
+			, @PathVariable("publicationId") Long publicationId // out CadenJon
+			, HttpSession session
+			, RedirectAttributes redirectAttributes
+			) {
 		
 		// If no userId is found in session, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
 		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
 		
+		// trying here to stop someone from forcing this method when not creator; was working, now no idea.... sigh 7/19 2pm
+		Long userId = (Long) session.getAttribute("userId"); 
+		PublicationMdl intVar = publicationSrv.findById(publicationId);
+		if(intVar.getUserMdl().getId() != userId) {
+			redirectAttributes.addFlashAttribute("mgmtPermissionErrorMsg", "Only the creator of a record can edit it.");
+			return "redirect:/publication";
+		}
 		
-		
-		// if someone hacky sacks the hidden fields... error this thing
-		
-		
-		
-		if (result.hasErrors()) {
+		if (result.hasErrors()) { 
 			
-//			List<PublicationMdl> intVar2 = publicationSrv.returnAll();
-//			model.addAttribute("publicationList", intVar2); 
+			// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
+//			Long userId = (Long) session.getAttribute("userId"); 
+			model.addAttribute("user", userSrv.findById(userId));
+
+			// records in table
+			List<PublicationMdl> intVar1 = publicationSrv.returnAll();
+			model.addAttribute("publicationList", intVar1); 
 			
-			List<PublicationMdl> intVar2 = publicationSrv.returnAll();
-			model.addAttribute("publicationList", intVar2); 
-			
-//			PublicationMdl intVar = publicationSrv.findById(publicationId); 
-//			model.addAttribute("publication", intVar);  
-			
-			// below provides drop-down that now works
-//			List<DojoMdl> intVar3 = dojoSrvIntVar.returnAll();
-//			model.addAttribute("dojoList", intVar3); 
+			// JRF: do ***NOT*** place the 'model.addAtt stuff here for the record being managed; that will disrupt the errorMsg flow. 
 			
 			return "publication/edit.jsp";
 		} else {
@@ -254,10 +257,18 @@ public class PublicationCtl {
     public String displayAllDeleteOne(
     		@PathVariable("publicationId") Long publicationId
     		, HttpSession session
+    		, RedirectAttributes redirectAttributes
     		) {
 		// If no userId is found in session, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
 		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
 		
+		// trying here to stop someone from forcing this method when not creator
+		Long userId = (Long) session.getAttribute("userId"); 
+		PublicationMdl intVar = publicationSrv.findById(publicationId);
+		if(intVar.getUserMdl().getId() != userId) {
+			redirectAttributes.addFlashAttribute("mgmtPermissionErrorMsg", "Only the creator of a record can delete it.");
+			return "redirect:/publication";
+		}
 		publicationSrv.delete(publicationId);
         return "redirect:/publication";
     }

@@ -18,6 +18,8 @@
 <!-- For any Bootstrap that uses JS or jQuery-->
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<!-- google fonts try -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
 </head>
 <body>
@@ -52,7 +54,7 @@
 			
 			<p>Here are
 			<c:choose>
-				<c:when test="${user.id == publication.userMdl.id }">your</c:when>
+				<c:when test="${user.id == publication.userMdl.id}">your</c:when>
 				<c:otherwise>
 				${publication.userMdl.userName}'s
 				</c:otherwise>
@@ -61,10 +63,6 @@
 			
 			<pre class="textAreaReadOut"><c:out value="${publication.thoughtsOnPub}"></c:out></pre>
 
-			
-			
-			
-			
 			<%-- 
 			<h4>publication.dojoMdl.dojoName: <c:out value="${publication.dojoMdl.dojoName}"></c:out></h4> 
 			--%> 
@@ -72,7 +70,6 @@
 			
 			<c:choose>
 				<c:when test="${user.id == publication.userMdl.id }">
-					<%-- <a href= "/publication/${publication.id}/edit">Edit</a>  --%>
 					<a href= "/publication/${publication.id}/edit"><button class="btn btn-secondary">Edit</button></a>
 				</c:when>
 				<c:otherwise>
@@ -81,11 +78,8 @@
 			
 			<c:choose>
 				<c:when test="${user.id == publication.userMdl.id }">
-					<%-- <a href= "/publication/${publication.id}/edit">Edit</a>  --%>
-<%-- 					<a href= "/publication/${publication.id}/edit"><button class="btn btn-secondary">Edit</button></a> --%>
 					<form action="/publication/${publication.id}" method="post">
 					    <input type="hidden" name="_method" value="delete">
-					    <!-- <input type="submit" value="Delete this publication"> -->
 					    <button class="btn btn-danger">Delete this publication</button>
 					</form>
 				</c:when>

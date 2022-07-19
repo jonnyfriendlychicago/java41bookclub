@@ -19,6 +19,8 @@
 <!-- For any Bootstrap that uses JS or jQuery-->
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<!-- google fonts try -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
 </head>
 <body>

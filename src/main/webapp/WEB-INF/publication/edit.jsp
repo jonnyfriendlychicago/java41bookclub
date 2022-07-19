@@ -4,7 +4,6 @@
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +18,8 @@
 <!-- For any Bootstrap that uses JS or jQuery-->
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<!-- google fonts try -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
 </head>
 <body>
@@ -65,13 +66,29 @@
 							<td><a href="/publication/${record.id}">${record.pubTitle}</a></td>
 							<td>${record.pubAuthor}</td>
 							<td>${record.userMdl.userName} </td>
-							<%-- <td>${record.dojoMdl.dojoName} </td> --%>
-							<td><a href="/publication/${record.id}/edit">Edit</a>
-		
-								<form action="/publication/${record.id}" method="post">
-									<input type="hidden" name="_method" value="delete"> 
-									<input type="submit" value="Delete">
-								</form></td>
+							<td>
+								<div class="buttonArrange1"> 
+									<c:choose>
+										<c:when test="${user.id == record.userMdl.id }">
+											<a href= "/publication/${record.id}/edit"><button class="btn btn-secondary">Edit</button></a>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose> 
+
+									<c:choose>
+										<c:when test="${user.id == record.userMdl.id }">
+											<form action="/publication/${record.id}" method="post">
+											    <input type="hidden" name="_method" value="delete">
+											    <button class="btn btn-danger">Delete</button>
+											</form>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</td>
+							
 						</tr>
 					</c:forEach>
 				</tbody>
