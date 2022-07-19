@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>java41bookclub - ${publication.pubTitle}</title>
+<title>java41bookclub</title>
 <meta charset="UTF-8">
 <!-- local css -->
 <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -22,11 +22,28 @@
 </head>
 <body>
 	<div id=header class="container-fluid">
-		<h1>java41bookclub</h1>
-		<a href="/home">Home</a> 
-		<a href="/publication">Publication List</a>
-		<h2>Publication Profile</h2>
+		<div id=header-top>
+			<h1>java41bookclub</h1>
+			<h4>${user.userName}</h4>
+			<a href="/logout">Logout</a>
+		</div>
+		<div id=nav class="container-fluid">
+			<a href="/home">Home</a> 
+			<a href= "/date">Date Template</a>
+			<a href= "/time">Time Template</a>
+			<a href= "/dojos">Dojos</a>
+			<a href= "/books">Books</a>
+			<a href= "/expenses">Expenses</a>
+			<a href= "/expensesAndCreate">expensesAndCreate</a>
+			<a href="/dojo">Dojo List</a>
+			<a href= "/ninja">Ninja List</a>
+			<a href= "/publication">Book Club</a>
+		</div>
 	</div>
+	<div id=pageHeader class="container-fluid">
+		<h2>Publication Management</h2>
+	</div>
+	
 	<div id=main class="container-fluid">
 		<div id=about class="container-fluid">
 			<%-- <h4>id: <c:out value="${publication.id}"></c:out></h4> --%>
@@ -62,11 +79,20 @@
 				</c:otherwise>
 			</c:choose> 
 			
-			<form action="/publication/${publication.id}" method="post">
-			    <input type="hidden" name="_method" value="delete">
-			    <!-- <input type="submit" value="Delete this publication"> -->
-			    <button class="btn btn-danger">Delete this publication</button>
-			</form>
+			<c:choose>
+				<c:when test="${user.id == publication.userMdl.id }">
+					<%-- <a href= "/publication/${publication.id}/edit">Edit</a>  --%>
+<%-- 					<a href= "/publication/${publication.id}/edit"><button class="btn btn-secondary">Edit</button></a> --%>
+					<form action="/publication/${publication.id}" method="post">
+					    <input type="hidden" name="_method" value="delete">
+					    <!-- <input type="submit" value="Delete this publication"> -->
+					    <button class="btn btn-danger">Delete this publication</button>
+					</form>
+				</c:when>
+				<c:otherwise>
+				</c:otherwise>
+			</c:choose>
+						
 		</div>
 	</div>
  

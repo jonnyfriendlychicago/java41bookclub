@@ -23,18 +23,14 @@
 </head>
 <body>
 	<div id=header class="container-fluid">
-		<h1>java41bookclub</h1>
-		<a href= "/date">Date Template</a>
-		<a href= "/time">Time Template</a>
-		<a href= "/dojos">Dojos</a>
-		<a href= "/books">Books</a>
-		<a href= "/expenses">Expenses</a>
-		<a href= "/expensesAndCreate">expensesAndCreate</a>
-		<a href="/welcome">Home</a> 
-		<a href="/dojo">Dojo List</a>
-		<a href= "/ninja">Ninja List</a>
+		<div id=header-top>
+			<h1>java41bookclub</h1>
+		</div>
+	</div>
+	<div id=pageHeader class="container-fluid">
 		<h2>Java App Login</h2>
 	</div>
+	
 	<div id=main class="container-fluid">
 		<div id=registerLogin class="container-fluid">
 		<h2>Welcome!</h2>
