@@ -100,7 +100,6 @@ public class HomeController {
 		return "index.jsp"; 
 	}
 
-	
     @PostMapping("/register")
     public String register(
     		@Valid @ModelAttribute("newUser") UserMdl newUser
@@ -125,7 +124,7 @@ public class HomeController {
         //Store their ID from the DB in session, in other words, log them in.
         session.setAttribute("userId", user.getId());
    	 
-	    return "redirect:/welcome";
+	    return "redirect:/home";
     }
     
     @PostMapping("/login")
@@ -151,26 +150,24 @@ public class HomeController {
     
         session.setAttribute("userId", user.getId());
    	 
-	    return "redirect:/welcome";
+	    return "redirect:/home";
         
         // JF NOTE: we need a home method and JSP!!
     }
     
-    @GetMapping("/welcome")
-	public String welcome(
+    @GetMapping("/home")
+	public String home(
 			Model model
 			, HttpSession session) {
 	 
-		// If no userId is found, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
-		if(session.getAttribute("userId") == null) {
-			return "redirect:/logout";
-		}
+		// If no userId is found in session, redirect to logout.  JRF: put this on basically all methods now, except the login/reg pages
+		if(session.getAttribute("userId") == null) {return "redirect:/logout";}
 		
 		// We get the userId from our session (we need to cast the result to a Long as the 'session.getAttribute("userId")' returns an object
 		Long userId = (Long) session.getAttribute("userId");
 		model.addAttribute("user", userSrv.findById(userId));
 		
-	    return "welcome.jsp";
+	    return "home.jsp";
 	    
 	}
     

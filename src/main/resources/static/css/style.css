@@ -1,7 +1,12 @@
 /* @charset "UTF-8"; */
+* {
+	font-family: "Roboto", sans-serif; 
+}
+
 
 h1 {
-	color:rgb(255, 255, 255); 
+	color:rgb(255, 255, 255);
+	font-family: "Roboto", sans-serif; 
 }
 
 h2 {
@@ -51,4 +56,17 @@ h2 {
 #registerLogin2 {
 	display: flex; 
 	justify-content: center;
+}
+
+/* pre {
+  display: block;
+  font-family: monospace;
+  white-space: pre;
+  margin: 1em 0;
+  font-family: "Roboto", sans-serif; 
+} */
+
+.textAreaReadOut {
+	font-family: "Roboto", sans-serif;
+	white-space: pre-wrap;
 }
